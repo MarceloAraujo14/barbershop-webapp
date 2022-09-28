@@ -1,0 +1,21 @@
+server:
+  port: 8081
+
+#Database Conf
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:15432/barbershop-db
+    username: "admin"
+    password: "admin"
+    driver-class-name: "org.postgresql.Driver"
+
+  flyway:
+    locations: "src/main/resources/migration"
+    baseline-on-migrate: false
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
