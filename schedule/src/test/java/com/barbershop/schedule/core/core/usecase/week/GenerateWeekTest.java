@@ -29,6 +29,7 @@ class GenerateWeekTest {
     @Test
     void shouldGenerateCurrentWeek() {
         List<Diary> actual = generateCurrentWeekUseCase.execute();
+        System.out.println(actual);
         assertEquals(getCurrentWeek(), actual);
     }
 
@@ -39,26 +40,26 @@ class GenerateWeekTest {
     }
 
     private List<Diary> getCurrentWeek(){
-
+        Diary diary = new Diary(LocalDate.now());
         return List.of(
-                new Diary(LocalDate.now()),
-                new Diary(LocalDate.now().plusDays(1)),
-                new Diary(LocalDate.now().plusDays(2)),
-                new Diary(LocalDate.now().plusDays(3)),
-                new Diary(LocalDate.now().plusDays(4)),
-                new Diary(LocalDate.now().plusDays(5))
+                new Diary(diary.getWeekTuesday()),
+                new Diary(diary.getWeekTuesday().plusDays(1)),
+                new Diary(diary.getWeekTuesday().plusDays(2)),
+                new Diary(diary.getWeekTuesday().plusDays(3)),
+                new Diary(diary.getWeekTuesday().plusDays(4)),
+                new Diary(diary.getWeekTuesday().plusDays(5))
         );
     }
 
     private List<Diary> getNextWeek(){
-
+        Diary diary = new Diary(LocalDate.now());
         return List.of(
-                new Diary(LocalDate.now().plusWeeks(1)),
-                new Diary(LocalDate.now().plusWeeks(1).plusDays(1)),
-                new Diary(LocalDate.now().plusWeeks(1).plusDays(2)),
-                new Diary(LocalDate.now().plusWeeks(1).plusDays(3)),
-                new Diary(LocalDate.now().plusWeeks(1).plusDays(4)),
-                new Diary(LocalDate.now().plusWeeks(1).plusDays(5))
+                new Diary(diary.getWeekTuesday().plusWeeks(1)),
+                new Diary(diary.getWeekTuesday().plusWeeks(1).plusDays(1)),
+                new Diary(diary.getWeekTuesday().plusWeeks(1).plusDays(2)),
+                new Diary(diary.getWeekTuesday().plusWeeks(1).plusDays(3)),
+                new Diary(diary.getWeekTuesday().plusWeeks(1).plusDays(4)),
+                new Diary(diary.getWeekTuesday().plusWeeks(1).plusDays(5))
         );
     }
 }

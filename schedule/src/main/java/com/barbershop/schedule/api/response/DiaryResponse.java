@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Builder
 @AllArgsConstructor
@@ -16,7 +18,7 @@ import java.util.List;
 @Data
 public class DiaryResponse {
     private String day;
-    private List<Integer> busyTimes = new ArrayList<>();
+    private Set<Integer> busyTimes = new LinkedHashSet<>();
     private boolean isAvailable;
 
     public static DiaryResponse getResponse(Diary diary){

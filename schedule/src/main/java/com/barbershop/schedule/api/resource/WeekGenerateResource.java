@@ -27,7 +27,7 @@ public class WeekGenerateResource {
         diaryService.generateFirstWeeks();
     }
 
-    @GetMapping(consumes = "application/json", produces = "application/json")
+    @GetMapping(produces = "application/json")
     public List<DiaryResponse> getWeeks(){
         return diaryService.getCurrentWeeks().stream().map(DiaryResponse::getResponse).toList();
     }

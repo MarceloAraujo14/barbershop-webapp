@@ -6,9 +6,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Builder
 @Entity(name = "diary")
@@ -22,7 +20,7 @@ public class DiaryEntity {
     private LocalDate date;
     @ElementCollection
     @CollectionTable(name = "busy_times", joinColumns = @JoinColumn(name = "date"))
-    private List<Integer> busyTimes = new ArrayList<>();
+    private Set<Integer> busyTimes = new LinkedHashSet<>();
 
     @Override
     public boolean equals(Object o) {

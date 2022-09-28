@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,13 +20,14 @@ class DiaryTest {
 
     @Test
     void createDiary(){
-        Diary diary = new Diary(LocalDate.now(), List.of(1,2,3));
+        Diary diary = new Diary(LocalDate.now(), Set.of(1,2,3));
         assertEquals(getToday(), diary);
     }
 
     @Test
     void shouldBeAvailable(){
         assertTrue(getTomorrow().isAvailable());
+        assertTrue(getToday().isAvailable());
     }
 
     @Test
@@ -40,22 +41,30 @@ class DiaryTest {
         assertEquals(DayOfWeek.TUESDAY, getToday().getWeekTuesday().getDayOfWeek());
     }
 
+    @Test
+    void shouldSetBusyTime(){
+        Diary diary = new Diary(LocalDate.now());
+        Set<Integer> busyTimes = diary.getBusyTimes();
+        System.out.println(busyTimes);
+        assertFalse(busyTimes.isEmpty());
+    }
+
     private Diary getToday(){
         return Diary.builder()
                 .date(LocalDate.now())
-                .busyTimes(List.of(1,2,3))
+                .busyTimes(Set.of(1,2,3))
                 .build();
     }
 
     private Diary getTomorrow(){
         return Diary.builder()
                 .date(LocalDate.now().plusDays(1))
-                .busyTimes(List.of())
+                .busyTimes(Set.of())
                 .build();
     }
 
     private Diary getYesterday(){
-        return new Diary(LocalDate.now().minusDays(1), List.of());
+        return new Diary(LocalDate.now().minusDays(1), Set.of());
     }
 
 }
