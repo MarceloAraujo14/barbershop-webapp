@@ -21,7 +21,7 @@ import static com.barbershop.schedule.core.entity.enums.StatusProcess.NEW;
 public class WeekGenerateResource {
     private final DiaryService diaryService;
 
-    @PostMapping(value = "/load", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/load")
     public void generateOnFirstLoad(){
         log.info("m generateOnFirstLoad status={}", NEW);
         diaryService.generateFirstWeeks();

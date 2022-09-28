@@ -29,15 +29,15 @@ public class DiaryService {
 
     public void generateFirstWeeks(){
         log.info("m generateFirstWeeks status={}", NEW);
-        Diary diary = null;
+        Diary today = null;
         try{
-            diary = getDiaryUseCase.execute(LocalDate.now());
+            today = getDiaryUseCase.execute(LocalDate.now());
             log.info("m generateFirstWeeks status={}", FAILURE);
 
         }catch (Exception e){
             log.info("m generateFirstWeeks - Semana não existe no banco. Gerando Semana atual e a seguinte... status={}", PROCESSING);
         }
-        if (Objects.isNull(diary)){
+        if (Objects.isNull(today)){
             generateCurrentWeekUseCase.execute();
             generateNextWeekUseCase.execute();
             log.info("m generateFirstWeeks status={}", SUCCESS);
