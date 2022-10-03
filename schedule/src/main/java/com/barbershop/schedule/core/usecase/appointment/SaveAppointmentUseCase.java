@@ -35,6 +35,7 @@ public class SaveAppointmentUseCase {
             setBusyTime(diary, request);
             //todo: save services id on services_appointment table
             updateDiaryUseCase.execute(diary);
+            request.setStatus(AppointmentStatus.SCHEDULE);
             return repository.save(request);
         }catch (OverlapTimeException e){
             log.info("m save - request={} - status={}", request, FAILURE);

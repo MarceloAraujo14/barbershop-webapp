@@ -19,8 +19,6 @@ import java.util.*;
 public class DiaryEntity {
     @Id
     private LocalDate date;
-    @Column(columnDefinition = "integer[]")
-
     @ElementCollection
     @CollectionTable(name = "diary_busy_times", joinColumns = @JoinColumn(name = "diary_date"))
     private Set<Integer> busyTimes = new LinkedHashSet<>();
