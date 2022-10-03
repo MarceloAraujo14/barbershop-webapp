@@ -40,7 +40,7 @@ public class Diary implements Comparable<Diary>{
     }
 
     public boolean isAvailable(){
-        return busyTimes.size() < 36 && (date.isEqual(LocalDate.now()) || date.isAfter(LocalDate.now()) || date.getDayOfWeek().getValue() != 1);
+        return busyTimes.size() < 36 && (date.isEqual(LocalDate.now()) || date.isAfter(LocalDate.now())) && date.getDayOfWeek().getValue() != 1;
     }
 
     public LocalDate getWeekTuesday(){

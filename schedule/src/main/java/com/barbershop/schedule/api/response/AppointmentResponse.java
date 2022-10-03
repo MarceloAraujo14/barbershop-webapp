@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,8 +19,8 @@ import java.util.UUID;
 @Data
 public class AppointmentResponse {
     private UUID appointmentId;
-    private LocalDate date;
-    private LocalTime startAt;
+    private String date;
+    private String startAt;
     private int duration;
     private UUID customerId;
     private UUID barberId;
@@ -29,8 +30,8 @@ public class AppointmentResponse {
     public static AppointmentResponse toResponse(Appointment appointment){
         return AppointmentResponse.builder()
                 .appointmentId(appointment.getAppointmentId())
-                .date(appointment.getDate())
-                .startAt(appointment.getStartAt())
+                .date(appointment.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")))
+                .startAt(appointment.getStartAt().format(DateTimeFormatter.ofPattern("HH:mm")))
                 .duration(appointment.getDuration())
                 .customerId(appointment.getCustomerId())
                 .barberId(appointment.getBarberId())

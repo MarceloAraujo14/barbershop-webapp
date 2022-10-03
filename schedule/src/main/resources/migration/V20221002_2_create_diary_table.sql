@@ -1,0 +1,4 @@
+--create table diary(
+--    "date" date primary key unique not null,
+--    "busy_times" integer[]
+--);

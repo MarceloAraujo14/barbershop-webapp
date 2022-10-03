@@ -30,9 +30,6 @@ public class AppointmentEntity {
     private UUID customerId;
     @Column(name = "id_barber")
     private UUID barberId;
-    @ElementCollection
-    @CollectionTable(name = "services", joinColumns = @JoinColumn(name = "appointment_id"))
-    private List<Integer> serviceIds;
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private AppointmentStatus status;
@@ -57,7 +54,6 @@ public class AppointmentEntity {
                 .duration(appointment.getDuration())
                 .customerId(appointment.getCustomerId())
                 .barberId(appointment.getBarberId())
-                .serviceIds(appointment.getServiceIds())
                 .status(appointment.getStatus())
                 .build();
     }
@@ -70,7 +66,6 @@ public class AppointmentEntity {
                 .duration(duration)
                 .customerId(customerId)
                 .barberId(barberId)
-                .serviceIds(serviceIds)
                 .status(status)
                 .build();
     }

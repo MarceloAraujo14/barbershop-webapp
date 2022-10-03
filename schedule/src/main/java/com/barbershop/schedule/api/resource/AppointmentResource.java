@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 import static com.barbershop.schedule.core.entity.enums.StatusProcess.NEW;
@@ -26,14 +27,10 @@ public class AppointmentResource {
     private final AppointmentService appointmentService;
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public AppointmentResponse create(@RequestBody AppointmentRequest request){
+    public AppointmentResponse create(@Valid @RequestBody AppointmentRequest request){
 
-        request.setCustomerId(UUID.randomUUID().toString());
-        request.setBarberId(UUID.randomUUID().toString());
         request.setStatus(AppointmentStatus.CREATED);
-
         log.info("m create - request={} - status={}", request, NEW);
-
         Appointment appointment = appointmentService.save(request.toAppointment());
 
         log.info("m create - appointment={} - status={}", appointment, SUCCESS);
