@@ -1,6 +1,7 @@
 package com.barbershop.schedule.core.service;
 
 import com.barbershop.schedule.core.entity.Appointment;
+import com.barbershop.schedule.core.exception.ScheduleAppointmentException;
 import com.barbershop.schedule.core.usecase.appointment.SaveAppointmentUseCase;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -15,7 +16,7 @@ public class AppointmentService {
 
     private final SaveAppointmentUseCase saveAppointmentUseCase;
 
-    public Appointment save(Appointment request){
+    public Appointment save(Appointment request) throws ScheduleAppointmentException {
         log.info("m save - request={} - status={}", request, PROCESSING);
         return saveAppointmentUseCase.execute(request);
     }

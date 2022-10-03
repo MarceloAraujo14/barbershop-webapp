@@ -1,6 +1,8 @@
 package com.barbershop.schedule.api.handler;
 
+import com.barbershop.schedule.core.exception.ScheduleAppointmentException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,6 +26,13 @@ public class ControllerAdviceResource {
             errors.put(fieldName, errorMessage);
         });
         return errors;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ScheduleAppointmentException.class)
+    public ResponseEntity<String> scheduleAppointmentException(
+            ScheduleAppointmentException ex) {
+        return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
 }

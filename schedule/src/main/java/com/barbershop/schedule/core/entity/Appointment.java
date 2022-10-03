@@ -21,4 +21,8 @@ public class Appointment {
     private UUID barberId;
     private List<Integer> serviceIds;
     private AppointmentStatus status;
+
+    public int getDurationBlocks(){
+        return duration/15;
+    }
 }

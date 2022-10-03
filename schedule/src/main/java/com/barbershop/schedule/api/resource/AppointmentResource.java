@@ -4,6 +4,8 @@ import com.barbershop.schedule.api.request.AppointmentRequest;
 import com.barbershop.schedule.api.response.AppointmentResponse;
 import com.barbershop.schedule.core.entity.Appointment;
 import com.barbershop.schedule.core.entity.enums.AppointmentStatus;
+import com.barbershop.schedule.core.exception.OverlapTimeException;
+import com.barbershop.schedule.core.exception.ScheduleAppointmentException;
 import com.barbershop.schedule.core.service.AppointmentService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.UUID;
 
 import static com.barbershop.schedule.core.entity.enums.StatusProcess.NEW;
 import static com.barbershop.schedule.core.entity.enums.StatusProcess.SUCCESS;
@@ -27,7 +28,7 @@ public class AppointmentResource {
     private final AppointmentService appointmentService;
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public AppointmentResponse create(@Valid @RequestBody AppointmentRequest request){
+    public AppointmentResponse create(@Valid @RequestBody AppointmentRequest request) throws ScheduleAppointmentException {
 
         request.setStatus(AppointmentStatus.CREATED);
         log.info("m create - request={} - status={}", request, NEW);

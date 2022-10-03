@@ -55,5 +55,4 @@ public class AppointmentRequest {
                 .status(status)
                 .build();
     }
-
 }
