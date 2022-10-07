@@ -4,13 +4,13 @@ server:
 #Database Conf
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:15432/barbershop-db
+    url: jdbc:postgresql://localhost:15432/barbershop-db?currentSchema=public
     username: "admin"
     password: "admin"
     driver-class-name: "org.postgresql.Driver"
 
   flyway:
-    locations: "src/main/resources/migration"
+    locations: "db/migration"
     baseline-on-migrate: false
 
   jpa:

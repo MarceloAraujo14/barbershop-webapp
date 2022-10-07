@@ -23,15 +23,18 @@ public class AppointmentEntity {
     @Column(name = "id_appointment", updatable = false, unique = true, nullable = false, length = 16)
     @GeneratedValue
     private UUID appointmentId;
+    @Column(name = "date", nullable = false)
     private LocalDate date;
+    @Column(nullable = false)
     private LocalTime startAt;
+    @Column(nullable = false)
     private int duration;
-    @Column(name = "id_costumer")
+    @Column(name = "id_costumer", nullable = false)
     private UUID customerId;
-    @Column(name = "id_barber")
+    @Column(name = "id_barber", nullable = false)
     private UUID barberId;
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "status", nullable = false)
     private AppointmentStatus status;
 
     @Override
@@ -47,26 +50,4 @@ public class AppointmentEntity {
         return getClass().hashCode();
     }
 
-    public static AppointmentEntity toEntity(Appointment appointment){
-        return AppointmentEntity.builder()
-                .date(appointment.getDate())
-                .startAt(appointment.getStartAt())
-                .duration(appointment.getDuration())
-                .customerId(appointment.getCustomerId())
-                .barberId(appointment.getBarberId())
-                .status(appointment.getStatus())
-                .build();
-    }
-
-    public Appointment toAppointment(){
-        return Appointment.builder()
-                .appointmentId(appointmentId)
-                .date(date)
-                .startAt(startAt)
-                .duration(duration)
-                .customerId(customerId)
-                .barberId(barberId)
-                .status(status)
-                .build();
-    }
 }

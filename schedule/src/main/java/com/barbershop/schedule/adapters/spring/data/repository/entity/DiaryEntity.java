@@ -20,7 +20,7 @@ public class DiaryEntity {
     @Id
     private LocalDate date;
     @ElementCollection
-    @CollectionTable(name = "diary_busy_times", joinColumns = @JoinColumn(name = "diary_date"))
+    @CollectionTable(name = "diary_busy_times", joinColumns = @JoinColumn(name = "diary"))
     private Set<Integer> busyTimes = new LinkedHashSet<>();
 
     @Override
