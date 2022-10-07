@@ -1,8 +1,8 @@
 package com.barbershop.schedule.api.request;
 
 import com.barbershop.schedule.api.validation.constraints.ValidDate;
-import com.barbershop.schedule.core.entity.Appointment;
-import com.barbershop.schedule.core.entity.enums.AppointmentStatus;
+import com.barbershop.schedule.core.domain.Appointment;
+import com.barbershop.schedule.core.domain.enums.AppointmentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

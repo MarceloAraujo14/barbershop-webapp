@@ -8,3 +8,9 @@ create table if not exists appointment(
 	status varchar(16) not null
 );
 
+create table if not exists appointment_services(
+    "appointment_id" uuid not null,
+    service_id integer not null,
+    foreign key ("appointment_id") references appointment("id_appointment")
+);
+

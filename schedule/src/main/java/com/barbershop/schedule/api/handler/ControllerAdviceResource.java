@@ -1,6 +1,7 @@
 package com.barbershop.schedule.api.handler;
 
 import com.barbershop.schedule.core.exception.ScheduleAppointmentException;
+import com.barbershop.schedule.core.exception.ScheduleException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -29,10 +30,10 @@ public class ControllerAdviceResource {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(ScheduleAppointmentException.class)
-    public ResponseEntity<String> scheduleAppointmentException(
-            ScheduleAppointmentException ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
+    @ExceptionHandler(ScheduleException.class)
+    public Map<String, Object> scheduleAppointmentException(
+            ScheduleException ex) {
+        return ex.getDetails();
     }
 
 }

@@ -1,6 +1,6 @@
 package com.barbershop.schedule.adapters.spring.data.repository.entity;
 
-import com.barbershop.schedule.core.entity.Diary;
+import com.barbershop.schedule.core.domain.Diary;
 import lombok.*;
 import org.hibernate.Hibernate;
 

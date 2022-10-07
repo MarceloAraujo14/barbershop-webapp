@@ -3,8 +3,8 @@ package com.barbershop.schedule.adapters.spring.data.repository.gateway;
 
 import com.barbershop.schedule.adapters.spring.data.repository.DiaryJpaRepository;
 import com.barbershop.schedule.adapters.spring.data.repository.entity.DiaryEntity;
-import com.barbershop.schedule.core.entity.Diary;
-import com.barbershop.schedule.core.port.repository.DiaryRepository;
+import com.barbershop.schedule.core.domain.Diary;
+import com.barbershop.schedule.core.port.dataprovider.DiaryRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -14,8 +14,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.barbershop.schedule.core.entity.enums.StatusProcess.NEW;
-import static com.barbershop.schedule.core.entity.enums.StatusProcess.SUCCESS;
+import static com.barbershop.schedule.core.domain.enums.StatusProcess.NEW;
+import static com.barbershop.schedule.core.domain.enums.StatusProcess.SUCCESS;
 
 @Log4j2
 @Service

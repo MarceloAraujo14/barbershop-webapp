@@ -1,7 +1,7 @@
 package com.barbershop.schedule.adapters.spring.data.repository.entity.mapper;
 
 import com.barbershop.schedule.adapters.spring.data.repository.entity.AppointmentEntity;
-import com.barbershop.schedule.core.entity.Appointment;
+import com.barbershop.schedule.core.domain.Appointment;
 
 public class AppointmentMapper {
 
@@ -14,6 +14,7 @@ public class AppointmentMapper {
                 .duration(appointment.getDuration())
                 .customerId(appointment.getCustomerId())
                 .barberId(appointment.getBarberId())
+                .serviceId(appointment.getServiceIds())
                 .status(appointment.getStatus())
                 .build();
     }
@@ -26,6 +27,7 @@ public class AppointmentMapper {
                 .duration(entity.getDuration())
                 .customerId(entity.getCustomerId())
                 .barberId(entity.getBarberId())
+                .serviceIds(entity.getServiceId())
                 .status(entity.getStatus())
                 .build();
     }

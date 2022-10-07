@@ -1,7 +1,6 @@
 package com.barbershop.schedule.adapters.spring.data.repository.entity;
 
-import com.barbershop.schedule.core.entity.Appointment;
-import com.barbershop.schedule.core.entity.enums.AppointmentStatus;
+import com.barbershop.schedule.core.domain.enums.AppointmentStatus;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -33,6 +32,9 @@ public class AppointmentEntity {
     private UUID customerId;
     @Column(name = "barber_id", nullable = false)
     private UUID barberId;
+    @ElementCollection(targetClass = Integer.class)
+    @CollectionTable(name = "appointment_services", joinColumns = @JoinColumn(name = "appointment_id"))
+    private List<Integer> serviceId;
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private AppointmentStatus status;

@@ -1,6 +1,6 @@
 package com.barbershop.schedule.api.response;
 
-import com.barbershop.schedule.core.entity.Diary;
+import com.barbershop.schedule.core.domain.Diary;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
