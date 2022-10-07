@@ -25,13 +25,13 @@ public class AppointmentEntity {
     private UUID appointmentId;
     @Column(name = "date", nullable = false)
     private LocalDate date;
-    @Column(nullable = false)
+    @Column(name = "start_at", nullable = false)
     private LocalTime startAt;
-    @Column(nullable = false)
+    @Column(name = "duration", nullable = false)
     private int duration;
-    @Column(name = "id_costumer", nullable = false)
+    @Column(name = "customer_id", nullable = false)
     private UUID customerId;
-    @Column(name = "id_barber", nullable = false)
+    @Column(name = "barber_id", nullable = false)
     private UUID barberId;
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)

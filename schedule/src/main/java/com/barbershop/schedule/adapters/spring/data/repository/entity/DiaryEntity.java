@@ -3,11 +3,12 @@ package com.barbershop.schedule.adapters.spring.data.repository.entity;
 import com.barbershop.schedule.core.entity.Diary;
 import lombok.*;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Builder
 @Entity(name = "diary")
@@ -17,10 +18,11 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DiaryEntity {
+    @Column(name = "date", nullable = false)
     @Id
     private LocalDate date;
     @ElementCollection
-    @CollectionTable(name = "diary_busy_times", joinColumns = @JoinColumn(name = "diary"))
+    @CollectionTable(name = "diary_busy_times",joinColumns = @JoinColumn(name = "date"))
     private Set<Integer> busyTimes = new LinkedHashSet<>();
 
     @Override

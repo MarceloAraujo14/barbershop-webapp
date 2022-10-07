@@ -1,5 +1,5 @@
 create table if not exists appointment(
-	id uuid unique not null primary key,
+	id_appointment uuid unique not null primary key,
 	"date" date not null,
 	start_at time without time zone not null,
 	duration integer not null,

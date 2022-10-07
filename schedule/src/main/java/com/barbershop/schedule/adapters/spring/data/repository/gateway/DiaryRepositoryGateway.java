@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.barbershop.schedule.core.entity.enums.StatusProcess.NEW;
 import static com.barbershop.schedule.core.entity.enums.StatusProcess.SUCCESS;
@@ -26,7 +27,7 @@ public class DiaryRepositoryGateway implements DiaryRepository {
     @Override
     public void saveAll(List<Diary> week) {
         log.info("m saveAll week={}, status={}", week, NEW);
-        List<DiaryEntity> entityList = week.stream().map(DiaryEntity::getEntity).toList();
+        List<DiaryEntity> entityList = week.stream().map(DiaryEntity::getEntity).collect(Collectors.toList());
         diaryRepository.saveAll(entityList);
         log.info("m saveAll status={}", SUCCESS);
     }
@@ -52,7 +53,6 @@ public class DiaryRepositoryGateway implements DiaryRepository {
         log.info("m getWeek - dates={} - status={}",dates, NEW);
         var week = diaryRepository.findAllById(dates);
         log.info("m getWeek week={} - status={}",week, SUCCESS);
-        return week.stream().map(DiaryEntity::getDiary).toList();
+        return week.stream().map(DiaryEntity::getDiary).collect(Collectors.toList());
     }
-
 }

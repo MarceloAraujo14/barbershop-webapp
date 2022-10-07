@@ -6,6 +6,7 @@ plugins {
 
 group 'com.barbershop.schedule'
 version '1.0-SNAPSHOT'
+sourceCompatibility = '11'
 
 configurations {
     compileOnly {
