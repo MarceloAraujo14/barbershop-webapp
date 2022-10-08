@@ -1,7 +1,6 @@
 package com.barbershop.schedule.core.usecase.diary;
 
 import com.barbershop.schedule.core.domain.Diary;
-import com.barbershop.schedule.core.exception.LunchTimeException;
 import com.barbershop.schedule.core.port.dataprovider.DiaryRepository;
 import com.barbershop.schedule.core.usecase.diary.contracts.UpdateDiaryUseCase;
 import lombok.AllArgsConstructor;

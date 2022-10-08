@@ -14,8 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import static com.barbershop.schedule.core.domain.enums.StatusProcess.FAILURE;
 import static com.barbershop.schedule.core.domain.enums.StatusProcess.PROCESSING;
@@ -32,13 +34,15 @@ public class ScheduleAppointmentUseCaseImpl implements ScheduleAppointmentUseCas
 
     @Transactional
     @Override
-    public Appointment execute(Appointment request) throws ScheduleAppointmentException, OverlapTimeException, InvalidScheduleDateException, ServiceIdNotFoundException {
+    public Appointment execute(Appointment request) throws ScheduleException {
         log.info("m execute - request={} - status={}", request, PROCESSING);
         try {
             validDateAppointment(request.getDate());
+            validateLunchTimeAppointment(request);
+            validateBusinessTimeRequest(request);
             Diary diary = getDiaryUseCase.execute(request.getDate());
             validateOverlapBusyTime(diary, request);
-            validateRequestServices(request.getServiceIds());
+            validateRequestServices(request.getServiceIds(), request.getAppointmentId());
             request.setStatus(AppointmentStatus.SCHEDULED);
             Appointment appointment = repository.save(request);
             setBusyTime(diary, request);
@@ -47,7 +51,7 @@ public class ScheduleAppointmentUseCaseImpl implements ScheduleAppointmentUseCas
             log.info("m execute - request={} - exception={} - status={} ", request, e.getMessage(), FAILURE);
             request.setStatus(AppointmentStatus.FAILURE);
             repository.save(request);
-            throw e;
+            throw new ScheduleException(e.getTitle(), e.getMessage());
         }
     }
 
@@ -65,28 +69,50 @@ public class ScheduleAppointmentUseCaseImpl implements ScheduleAppointmentUseCas
         }
     }
 
-    private void validateOverlapBusyTime(Diary diary, Appointment request) throws OverlapTimeException {
+    private void validateLunchTimeAppointment(Appointment request) throws ScheduleOnLunchTimeException {
+        if(request.getStartAt().isAfter(LocalTime.of(11,59))
+        && request.getStartAt().plusMinutes(request.getDuration()).isBefore(LocalTime.of(13,0))){
+            log.info("m validateLunchTimeAppointment - request={} - status={}", request, FAILURE);
+            throw new ScheduleOnLunchTimeException();
+        }
+    }
+
+    private void validateBusinessTimeRequest(Appointment request) throws ScheduleOutBusinessTimeException {
+        if(request.getStartAt().plusMinutes(request.getDuration()).isAfter(LocalTime.of(17,45))
+                || request.getStartAt().isBefore(LocalTime.of(8,0))){
+            log.info("m validateLunchTimeAppointment - request={} - status={}", request, FAILURE);
+            throw new ScheduleOutBusinessTimeException();
+        }
+    }
+
+    private void validateOverlapBusyTime(Diary diary, Appointment request) throws ScheduleOverlapTimeException {
         int startBlock = diary.getStartBlock(request.getStartAt());
         int durationBlocks = request.getDurationBlocks();
         for (int i = startBlock; i < startBlock + durationBlocks; i++) {
             if (diary.getBusyTimes().contains(i)) {
                 log.info("m validateOverlapTime - request={} - status={}", request, FAILURE);
-                throw new OverlapTimeException();
+                throw new ScheduleOverlapTimeException();
             }
         }
     }
 
-    private void setBusyTime(Diary diary, Appointment request){
+    private void setBusyTime(Diary diary, Appointment request) throws UpdateDiaryException {
         int startBlock = diary.getStartBlock(request.getStartAt());
         int durationBlocks = request.getDurationBlocks();
         for (int i = startBlock; i < startBlock + durationBlocks; i++) {
             diary.getBusyTimes().add(i);
         }
-        updateDiaryUseCase.execute(diary);
+        try {
+            updateDiaryUseCase.execute(diary);
+        }catch (Exception e){
+            log.info("m setBusyTime - request={} - status={}", request, FAILURE);
+            throw new UpdateDiaryException();
+        }
     }
 
-    private void validateRequestServices(List<Integer> services) throws ServiceIdNotFoundException {
+    private void validateRequestServices(List<Integer> services, UUID appointmentId) throws ServiceIdNotFoundException {
         if(Objects.isNull(services) || services.isEmpty()){
+            log.info("m validateRequestServices - appointmentId={} - status={}", appointmentId, FAILURE);
             throw new ServiceIdNotFoundException();
         }
 //        serviceClient.servicesExistsById(services);

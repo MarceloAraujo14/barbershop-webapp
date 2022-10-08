@@ -39,9 +39,8 @@ public class AppointmentRequest {
     private String customerId;
     @NotBlank(message = "Barber Id is mandatory")
     private String barberId;
-
     @Valid
-    @NotEmpty(message = "Must select at least one service")
+    @NotEmpty(message = "Select at least one service")
     private List<Integer> serviceIds;
     private AppointmentStatus status;
 
@@ -60,7 +59,7 @@ public class AppointmentRequest {
 
     @Builder
     public AppointmentRequest(String date, String startAt, int duration, String customerId,
-                              String barberId, List<Integer> serviceIds, AppointmentStatus status) {
+                              String barberId, List<Integer> serviceIds) {
         this.appointmentId = UUID.randomUUID().toString(); //todo: should this uuid come from frontend?
         this.date = date;
         this.startAt = startAt;
@@ -68,7 +67,7 @@ public class AppointmentRequest {
         this.customerId = customerId;
         this.barberId = barberId;
         this.serviceIds = serviceIds;
-        this.status = status;
+        this.status = AppointmentStatus.CREATED;
     }
 
     @Builder

@@ -58,7 +58,7 @@ public class DomainTestModels {
 
     public static Appointment APPOINTMENT_INVALID_AFTER_LAST_WEEK = Appointment.builder()
                 .appointmentId(UUID.randomUUID())
-                .date(WEEK_TUESDAY.plusWeeks(1).plusDays(1))
+                .date(WEEK_TUESDAY.plusWeeks(2))
                 .startAt(LocalTime.of(10,0))
                 .duration(15)
                 .customerId(UUID.randomUUID())
@@ -78,7 +78,7 @@ public class DomainTestModels {
             .status(CREATED)
             .build();
 
-    public static Appointment APPOINTMENT_INVALID_BEFORE_NOW=Appointment.builder()
+    public static Appointment APPOINTMENT_INVALID_BEFORE_NOW = Appointment.builder()
                 .appointmentId(UUID.randomUUID())
                 .date(LocalDate.of(2022,10, 11))
                 .startAt(LocalTime.now().minusHours(1))
