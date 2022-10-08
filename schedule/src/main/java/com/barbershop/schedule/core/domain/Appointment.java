@@ -8,8 +8,6 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class Appointment {
@@ -26,5 +24,16 @@ public class Appointment {
         return duration/15;
     }
 
-
+    @Builder
+    public Appointment(UUID appointmentId, LocalDate date, LocalTime startAt, int duration, UUID customerId,
+                       UUID barberId, List<Integer> serviceIds, AppointmentStatus status) {
+        this.appointmentId = appointmentId;
+        this.date = date;
+        this.startAt = startAt;
+        this.duration = duration;
+        this.customerId = customerId;
+        this.barberId = barberId;
+        this.serviceIds = serviceIds;
+        this.status = status;
+    }
 }

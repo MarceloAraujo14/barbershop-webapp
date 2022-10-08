@@ -17,8 +17,8 @@ The project is built as microsservices, with independent databases and each serv
 communicate syncronous using http REST requests and assyncronous through messaging 
 system such as kafka. 
 
-The system is composed of one web app interface to interact with the frontend user and 
-with the backend api's.
+The system is composed of one web app frontend to interact with the user and 
+make http calls to the backend api's.
 
 To keep the context well delimited and focus on the business, the api's use concepts of ddd and
 clean architecture, each service will be composed of three layers: 
@@ -32,16 +32,5 @@ clean architecture, each service will be composed of three layers:
 - barbershop-customer
 - barbershop-web-app
 
-**Technologies:**
-- Java 11
-- Gradle
-- Spring Web
-- Spring Data JPA
-- Spring Validation
-- FlyWay Migration
-- Lombok
-- Mockito
-- JUnit
-- PostgreSQL
-- Docker
+
 

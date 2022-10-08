@@ -9,7 +9,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-@Builder
+
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
@@ -24,15 +24,18 @@ public class Diary implements Comparable<Diary>{
                     "11:00","11:15","11:30","11:45","13:00","13:15","13:30","13:45","14:00","14:15","14:30","14:45",
                     "15:00","15:15","15:30","15:45","16:00","16:15","16:30","16:45","17:00","17:15","17:30","17:45");
 
+    @Builder
+    public Diary(LocalDate date) {
+        this.date = date;
+        setBusyTime();
+    }
+
+    @Builder
     public Diary(LocalDate date, Set<Integer> busyTimes) {
         this.date = date;
         this.busyTimes.addAll(busyTimes);
     }
 
-    public Diary(LocalDate date) {
-        this.date = date;
-        setBusyTime();
-    }
 
     public int getStartBlock(LocalTime time){
         time = roundHour(time);

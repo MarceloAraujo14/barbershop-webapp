@@ -4,7 +4,10 @@ import com.barbershop.schedule.api.request.AppointmentRequest;
 import com.barbershop.schedule.api.response.AppointmentResponse;
 import com.barbershop.schedule.core.domain.Appointment;
 import com.barbershop.schedule.core.domain.enums.AppointmentStatus;
+import com.barbershop.schedule.core.exception.InvalidScheduleDateException;
+import com.barbershop.schedule.core.exception.OverlapTimeException;
 import com.barbershop.schedule.core.exception.ScheduleAppointmentException;
+import com.barbershop.schedule.core.exception.ServiceIdNotFoundException;
 import com.barbershop.schedule.core.usecase.appointment.contracts.ScheduleAppointmentUseCase;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -27,7 +30,7 @@ public class AppointmentResource {
     private final ScheduleAppointmentUseCase scheduleAppointmentUseCase;
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public AppointmentResponse create(@Valid @RequestBody AppointmentRequest request) throws ScheduleAppointmentException {
+    public AppointmentResponse create(@Valid @RequestBody AppointmentRequest request) throws ScheduleAppointmentException, OverlapTimeException, InvalidScheduleDateException, ServiceIdNotFoundException {
 
         request.setStatus(AppointmentStatus.CREATED);
         log.info("m create - request={} - status={}", request, NEW);

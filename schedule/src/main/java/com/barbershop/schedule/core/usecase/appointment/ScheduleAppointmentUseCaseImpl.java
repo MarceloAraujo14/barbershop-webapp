@@ -11,8 +11,11 @@ import com.barbershop.schedule.core.usecase.diary.contracts.UpdateDiaryUseCase;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
 
 import static com.barbershop.schedule.core.domain.enums.StatusProcess.FAILURE;
 import static com.barbershop.schedule.core.domain.enums.StatusProcess.PROCESSING;
@@ -27,13 +30,15 @@ public class ScheduleAppointmentUseCaseImpl implements ScheduleAppointmentUseCas
     private final UpdateDiaryUseCase updateDiaryUseCase;
     //    private final ServiceClient serviceClient;
 
+    @Transactional
     @Override
-    public Appointment execute(Appointment request) throws ScheduleAppointmentException, OverlapTimeException {
+    public Appointment execute(Appointment request) throws ScheduleAppointmentException, OverlapTimeException, InvalidScheduleDateException, ServiceIdNotFoundException {
         log.info("m save - request={} - status={}", request, PROCESSING);
         try {
+            validDateAppointment(request.getDate());
             Diary diary = getDiaryUseCase.execute(request.getDate());
-//            validateRequestServices(request.getServiceIds());
-            validateOverlapTime(diary, request);
+            validateOverlapBusyTime(diary, request);
+            validateRequestServices(request.getServiceIds());
             request.setStatus(AppointmentStatus.SCHEDULED);
             Appointment appointment = repository.save(request);
             setBusyTime(diary, request);
@@ -46,16 +51,21 @@ public class ScheduleAppointmentUseCaseImpl implements ScheduleAppointmentUseCas
         }
     }
 
-    private void validDateAppointment(LocalDate requestDate) throws ScheduleOnMondayException, ScheduleYesterdayException {
-        if (requestDate.getDayOfWeek().getValue() == 1){
-            throw new ScheduleOnMondayException();
-        }
-        if (requestDate.isBefore(LocalDate.now())){
-            throw new ScheduleYesterdayException();
+    private void validDateAppointment(LocalDate requestDate) throws InvalidScheduleDateException {
+        LocalDate thisTuesday = Diary.builder().date(LocalDate.now()).build().getWeekTuesday();
+        LocalDate nextWeekEnd = thisTuesday.plusWeeks(1).plusDays(5);
+        LocalDate today = LocalDate.now();
+        LocalDate monday = thisTuesday.minusDays(1);
+
+        if (monday.isEqual(requestDate)
+            || today.isAfter(requestDate)
+            || nextWeekEnd.isBefore(requestDate)
+        ){
+            throw new InvalidScheduleDateException();
         }
     }
 
-    private void validateOverlapTime(Diary diary, Appointment request) throws OverlapTimeException {
+    private void validateOverlapBusyTime(Diary diary, Appointment request) throws OverlapTimeException {
         int startBlock = diary.getStartBlock(request.getStartAt());
         int durationBlocks = request.getDurationBlocks();
         for (int i = startBlock; i < startBlock + durationBlocks; i++) {
@@ -75,9 +85,12 @@ public class ScheduleAppointmentUseCaseImpl implements ScheduleAppointmentUseCas
         updateDiaryUseCase.execute(diary);
     }
 
-//    private void validateRequestServices(List<Integer> services){
+    private void validateRequestServices(List<Integer> services) throws ServiceIdNotFoundException {
+        if(Objects.isNull(services) || services.isEmpty()){
+            throw new ServiceIdNotFoundException();
+        }
 //        serviceClient.servicesExistsById(services);
-//    }
+    }
 
 
 }
