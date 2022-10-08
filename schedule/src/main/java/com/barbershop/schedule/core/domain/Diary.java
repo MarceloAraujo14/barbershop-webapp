@@ -66,12 +66,11 @@ public class Diary implements Comparable<Diary>{
     }
 
     private boolean isBusinessTime(){
-        return (LocalTime.now().isBefore(LocalTime.of(17,45)));
+        return (LocalTime.now().isBefore(LocalTime.of(17,45))) && LocalTime.now().isAfter(LocalTime.of(7,59));
     }
 
-    @Override
-    public int compareTo(Diary d) {
-        return this.date.isAfter(d.date)? -1 : 1;
+    private boolean isLunchTime(){
+        return (LocalTime.now().isBefore(LocalTime.of(17,45)));
     }
 
     private LocalTime roundHour(LocalTime time){
@@ -79,6 +78,11 @@ public class Diary implements Comparable<Diary>{
         if(time.getMinute() < 30) return LocalTime.of(time.getHour(), 30);
         if(time.getMinute() < 45) return LocalTime.of(time.getHour(), 45);
         return LocalTime.of(time.getHour()+1, 0);
+    }
+
+    @Override
+    public int compareTo(Diary d) {
+        return this.date.isAfter(d.date)? -1 : 1;
     }
 }
 

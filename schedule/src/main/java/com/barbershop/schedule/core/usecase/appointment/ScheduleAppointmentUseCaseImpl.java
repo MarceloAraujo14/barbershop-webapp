@@ -33,7 +33,7 @@ public class ScheduleAppointmentUseCaseImpl implements ScheduleAppointmentUseCas
     @Transactional
     @Override
     public Appointment execute(Appointment request) throws ScheduleAppointmentException, OverlapTimeException, InvalidScheduleDateException, ServiceIdNotFoundException {
-        log.info("m save - request={} - status={}", request, PROCESSING);
+        log.info("m execute - request={} - status={}", request, PROCESSING);
         try {
             validDateAppointment(request.getDate());
             Diary diary = getDiaryUseCase.execute(request.getDate());
@@ -44,7 +44,7 @@ public class ScheduleAppointmentUseCaseImpl implements ScheduleAppointmentUseCas
             setBusyTime(diary, request);
             return appointment;
         }catch (ScheduleException e){
-            log.info("m save - request={} - exception={} - status={} ", request, e.getMessage(), FAILURE);
+            log.info("m execute - request={} - exception={} - status={} ", request, e.getMessage(), FAILURE);
             request.setStatus(AppointmentStatus.FAILURE);
             repository.save(request);
             throw e;

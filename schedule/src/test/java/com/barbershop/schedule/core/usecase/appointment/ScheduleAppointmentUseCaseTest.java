@@ -2,10 +2,7 @@ package com.barbershop.schedule.core.usecase.appointment;
 
 import com.barbershop.schedule.core.domain.Appointment;
 import com.barbershop.schedule.core.domain.Diary;
-import com.barbershop.schedule.core.exception.InvalidScheduleDateException;
-import com.barbershop.schedule.core.exception.OverlapTimeException;
-import com.barbershop.schedule.core.exception.ScheduleAppointmentException;
-import com.barbershop.schedule.core.exception.ServiceIdNotFoundException;
+import com.barbershop.schedule.core.exception.*;
 import com.barbershop.schedule.core.port.dataprovider.AppointmentRepository;
 import com.barbershop.schedule.core.usecase.diary.contracts.GetDiaryUseCase;
 import com.barbershop.schedule.core.usecase.diary.contracts.UpdateDiaryUseCase;
@@ -19,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static com.barbershop.schedule.core.domain.enums.AppointmentStatus.FAILURE;
@@ -151,6 +149,24 @@ class ScheduleAppointmentUseCaseTest {
         verify(getDiaryUseCase, times(1)).execute(appointment.getDate());
         verifyNoInteractions(updateDiaryUseCase);
 
+        assertEquals(FAILURE, appointmentCaptor.getValue().getStatus());
+    }
+
+    @Test
+    void should_block_appointment_lunch_time(){
+        Appointment appointment = APPOINTMENT_INVALID_LUNCH_TIME;
+        Diary diary = VALID_DIARY;
+
+        when(repository.save(any())).thenReturn(any());
+        when(getDiaryUseCase.execute(appointment.getDate())).thenReturn(diary);
+        doThrow(LunchTimeException.class).when(updateDiaryUseCase).execute(any()); //todo: fix this test
+        assertThrows(LunchTimeException.class, () -> scheduleAppointmentUseCase.execute(appointment));
+
+        verify(repository, times(1)).save(appointmentCaptor.capture());
+        verify(getDiaryUseCase, times(1)).execute(appointment.getDate());
+        verify(updateDiaryUseCase, times(1)).execute(diaryCaptor.capture());
+
+        assertTrue(Objects.nonNull(diaryCaptor.getValue().getBusyTimes()));
         assertEquals(FAILURE, appointmentCaptor.getValue().getStatus());
     }
 
