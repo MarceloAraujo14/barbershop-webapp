@@ -25,4 +25,6 @@ public class Appointment {
     public int getDurationBlocks(){
         return duration/15;
     }
+
+
 }

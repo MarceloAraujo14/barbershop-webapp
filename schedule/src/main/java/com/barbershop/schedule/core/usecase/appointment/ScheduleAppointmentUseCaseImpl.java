@@ -3,8 +3,7 @@ package com.barbershop.schedule.core.usecase.appointment;
 import com.barbershop.schedule.core.domain.Appointment;
 import com.barbershop.schedule.core.domain.Diary;
 import com.barbershop.schedule.core.domain.enums.AppointmentStatus;
-import com.barbershop.schedule.core.exception.OverlapTimeException;
-import com.barbershop.schedule.core.exception.ScheduleAppointmentException;
+import com.barbershop.schedule.core.exception.*;
 import com.barbershop.schedule.core.port.dataprovider.AppointmentRepository;
 import com.barbershop.schedule.core.usecase.appointment.contracts.ScheduleAppointmentUseCase;
 import com.barbershop.schedule.core.usecase.diary.contracts.GetDiaryUseCase;
@@ -12,6 +11,8 @@ import com.barbershop.schedule.core.usecase.diary.contracts.UpdateDiaryUseCase;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 import static com.barbershop.schedule.core.domain.enums.StatusProcess.FAILURE;
 import static com.barbershop.schedule.core.domain.enums.StatusProcess.PROCESSING;
@@ -27,7 +28,7 @@ public class ScheduleAppointmentUseCaseImpl implements ScheduleAppointmentUseCas
     //    private final ServiceClient serviceClient;
 
     @Override
-    public Appointment execute(Appointment request) throws ScheduleAppointmentException {
+    public Appointment execute(Appointment request) throws ScheduleAppointmentException, OverlapTimeException {
         log.info("m save - request={} - status={}", request, PROCESSING);
         try {
             Diary diary = getDiaryUseCase.execute(request.getDate());
@@ -37,11 +38,20 @@ public class ScheduleAppointmentUseCaseImpl implements ScheduleAppointmentUseCas
             Appointment appointment = repository.save(request);
             setBusyTime(diary, request);
             return appointment;
-        }catch (OverlapTimeException e){
+        }catch (ScheduleException e){
             log.info("m save - request={} - exception={} - status={} ", request, e.getMessage(), FAILURE);
             request.setStatus(AppointmentStatus.FAILURE);
             repository.save(request);
-            throw new ScheduleAppointmentException();
+            throw e;
+        }
+    }
+
+    private void validDateAppointment(LocalDate requestDate) throws ScheduleOnMondayException, ScheduleYesterdayException {
+        if (requestDate.getDayOfWeek().getValue() == 1){
+            throw new ScheduleOnMondayException();
+        }
+        if (requestDate.isBefore(LocalDate.now())){
+            throw new ScheduleYesterdayException();
         }
     }
 
