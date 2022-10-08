@@ -27,7 +27,7 @@ public class Diary implements Comparable<Diary>{
     @Builder
     public Diary(LocalDate date) {
         this.date = date;
-        setBusyTime();
+        updateBusyTimes();
     }
 
     @Builder
@@ -57,7 +57,7 @@ public class Diary implements Comparable<Diary>{
         return 2 - today;
     }
 
-    private void setBusyTime(){
+    private void updateBusyTimes(){
         if(!date.isEqual(LocalDate.now()) || !isBusinessTime()) return;
         int busyTimeBlock = getStartBlock(LocalTime.now());
         for (int i = 0; i <= busyTimeBlock; i++) {

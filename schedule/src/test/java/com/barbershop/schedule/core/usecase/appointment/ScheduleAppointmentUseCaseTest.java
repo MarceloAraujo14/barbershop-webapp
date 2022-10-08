@@ -17,6 +17,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Set;
 
 import static com.barbershop.schedule.core.domain.enums.AppointmentStatus.FAILURE;
@@ -45,7 +47,7 @@ class ScheduleAppointmentUseCaseTest {
     @Test
     void should_schedule_appointment_success() throws ScheduleAppointmentException, OverlapTimeException, InvalidScheduleDateException, ServiceIdNotFoundException {
         Appointment validAppointment = APPOINTMENT_VALID;
-        Diary validDiary = getValidDiary();
+        Diary validDiary = VALID_DIARY;
 
         when(repository.save(any())).thenReturn(any());
         when(getDiaryUseCase.execute(validAppointment.getDate())).thenReturn(validDiary);
@@ -115,22 +117,43 @@ class ScheduleAppointmentUseCaseTest {
     @Test
     void should_block_appointment_whitout_serviceIds(){
         Appointment appointment = APPOINTMENT_INVALID_WITHOUT_SERVICEID;
+        Diary diary = VALID_DIARY;
 
         when(repository.save(any())).thenReturn(any());
+        when(getDiaryUseCase.execute(appointment.getDate())).thenReturn(diary);
 
         assertThrows(ServiceIdNotFoundException.class, () -> scheduleAppointmentUseCase.execute(appointment));
 
         verify(repository, times(1)).save(appointmentCaptor.capture());
-
-        verifyNoInteractions(getDiaryUseCase);
+        verify(getDiaryUseCase, times(1)).execute(appointment.getDate());
         verifyNoInteractions(updateDiaryUseCase);
 
         assertEquals(FAILURE, appointmentCaptor.getValue().getStatus());
     }
 
-    @Test
+    //todo: create this test after create the Services microsservice
     void should_block_appointment_with_invalid_serviceId(){
 
     }
+
+    @Test
+    void should_block_appointment_overlap_busy_time(){
+        Appointment appointment = APPOINTMENT_INVALID_OVERLAP_TIME;
+        Diary diary = VALID_DIARY;
+        diary.setBusyTimes(Set.of(0,1,2,3,4,5));
+
+        when(repository.save(any())).thenReturn(any());
+        when(getDiaryUseCase.execute(appointment.getDate())).thenReturn(diary);
+//        when(updateDiaryUseCase.execute(diary)).thenThrow(OverlapTimeException.class);
+        assertThrows(OverlapTimeException.class, () -> scheduleAppointmentUseCase.execute(appointment));
+
+        verify(repository, times(1)).save(appointmentCaptor.capture());
+        verify(getDiaryUseCase, times(1)).execute(appointment.getDate());
+        verifyNoInteractions(updateDiaryUseCase);
+
+        assertEquals(FAILURE, appointmentCaptor.getValue().getStatus());
+    }
+
+
 
 }

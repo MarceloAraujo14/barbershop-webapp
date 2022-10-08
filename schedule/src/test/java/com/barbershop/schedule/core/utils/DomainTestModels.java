@@ -18,11 +18,10 @@ public class DomainTestModels {
     public static final LocalTime AFTER_BUSINESS_TIME = LocalTime.of(18,0);
     public static final LocalTime BEFORE_BUSINESS_TIME = LocalTime.of(7,0);
 
-    public static Diary getValidDiary(){
-        return Diary.builder()
+    public static Diary VALID_DIARY= Diary.builder()
                 .date(WEEK_TUESDAY)
                 .build();
-    }
+
 
     public static final Appointment APPOINTMENT_VALID = Appointment.builder()
                 .appointmentId(UUID.randomUUID())
@@ -89,6 +88,17 @@ public class DomainTestModels {
                 .serviceIds(List.of(1))
                 .status(CREATED)
                 .build();
+
+    public static Appointment APPOINTMENT_INVALID_OVERLAP_TIME=Appointment.builder()
+            .appointmentId(UUID.randomUUID())
+            .date(WEEK_TUESDAY.plusWeeks(1))
+            .startAt(LocalTime.of(8,0))
+            .duration(15)
+            .customerId(UUID.randomUUID())
+            .barberId(UUID.randomUUID())
+            .serviceIds(List.of(1))
+            .status(CREATED)
+            .build();
 
     public static Appointment APPOINTMENT_INVALID_LUNCH_TIME= Appointment.builder()
                 .appointmentId(UUID.randomUUID())
