@@ -5,16 +5,13 @@ import com.barbershop.schedule.core.domain.Diary;
 import com.barbershop.schedule.core.domain.enums.AppointmentStatus;
 import com.barbershop.schedule.core.exception.OverlapTimeException;
 import com.barbershop.schedule.core.exception.ScheduleAppointmentException;
-import com.barbershop.schedule.core.port.client.ServiceClient;
 import com.barbershop.schedule.core.port.dataprovider.AppointmentRepository;
-import com.barbershop.schedule.core.usecase.appointment.contracts.SaveAppointmentUseCase;
+import com.barbershop.schedule.core.usecase.appointment.contracts.ScheduleAppointmentUseCase;
 import com.barbershop.schedule.core.usecase.diary.contracts.GetDiaryUseCase;
 import com.barbershop.schedule.core.usecase.diary.contracts.UpdateDiaryUseCase;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static com.barbershop.schedule.core.domain.enums.StatusProcess.FAILURE;
 import static com.barbershop.schedule.core.domain.enums.StatusProcess.PROCESSING;
@@ -22,12 +19,12 @@ import static com.barbershop.schedule.core.domain.enums.StatusProcess.PROCESSING
 @Log4j2
 @Service
 @AllArgsConstructor
-public class SaveAppointmentUseCaseImpl implements SaveAppointmentUseCase {
+public class ScheduleAppointmentUseCaseImpl implements ScheduleAppointmentUseCase {
 
     private final AppointmentRepository repository;
-//    private final ServiceClient serviceClient;
     private final GetDiaryUseCase getDiaryUseCase;
     private final UpdateDiaryUseCase updateDiaryUseCase;
+    //    private final ServiceClient serviceClient;
 
     @Override
     public Appointment execute(Appointment request) throws ScheduleAppointmentException {

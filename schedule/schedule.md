@@ -35,6 +35,6 @@
 - Make past days and hours unavailable
 
 **Technologies:**
-- Java 17
+- Java 11
 - Gradle
 - PostgreSQL

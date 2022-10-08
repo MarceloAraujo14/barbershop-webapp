@@ -1,4 +1,4 @@
-package com.barbershop.schedule.adapters.spring.data.repository.entity;
+package com.barbershop.schedule.adapters.spring.repository.entity;
 
 import com.barbershop.schedule.core.domain.Diary;
 import lombok.*;

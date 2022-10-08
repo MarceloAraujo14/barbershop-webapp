@@ -33,9 +33,15 @@ clean architecture, each service will be composed of three layers:
 - barbershop-web-app
 
 **Technologies:**
-- Java 17
+- Java 11
 - Gradle
+- Spring Web
+- Spring Data JPA
+- Spring Validation
+- FlyWay Migration
+- Lombok
+- Mockito
+- JUnit
 - PostgreSQL
-- Clean Architecture
-- 
+- Docker
 

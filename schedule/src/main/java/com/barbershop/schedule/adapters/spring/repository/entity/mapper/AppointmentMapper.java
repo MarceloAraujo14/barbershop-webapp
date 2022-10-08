@@ -1,6 +1,6 @@
-package com.barbershop.schedule.adapters.spring.data.repository.entity.mapper;
+package com.barbershop.schedule.adapters.spring.repository.entity.mapper;
 
-import com.barbershop.schedule.adapters.spring.data.repository.entity.AppointmentEntity;
+import com.barbershop.schedule.adapters.spring.repository.entity.AppointmentEntity;
 import com.barbershop.schedule.core.domain.Appointment;
 
 public class AppointmentMapper {

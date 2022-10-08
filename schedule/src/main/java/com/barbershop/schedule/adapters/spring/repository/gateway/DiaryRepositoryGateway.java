@@ -1,8 +1,8 @@
-package com.barbershop.schedule.adapters.spring.data.repository.gateway;
+package com.barbershop.schedule.adapters.spring.repository.gateway;
 
 
-import com.barbershop.schedule.adapters.spring.data.repository.DiaryJpaRepository;
-import com.barbershop.schedule.adapters.spring.data.repository.entity.DiaryEntity;
+import com.barbershop.schedule.adapters.spring.repository.DiaryJpaRepository;
+import com.barbershop.schedule.adapters.spring.repository.entity.DiaryEntity;
 import com.barbershop.schedule.core.domain.Diary;
 import com.barbershop.schedule.core.port.dataprovider.DiaryRepository;
 import lombok.AllArgsConstructor;

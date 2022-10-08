@@ -5,7 +5,7 @@ import com.barbershop.schedule.api.response.AppointmentResponse;
 import com.barbershop.schedule.core.domain.Appointment;
 import com.barbershop.schedule.core.domain.enums.AppointmentStatus;
 import com.barbershop.schedule.core.exception.ScheduleAppointmentException;
-import com.barbershop.schedule.core.usecase.appointment.contracts.SaveAppointmentUseCase;
+import com.barbershop.schedule.core.usecase.appointment.contracts.ScheduleAppointmentUseCase;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +24,7 @@ import static com.barbershop.schedule.core.domain.enums.StatusProcess.SUCCESS;
 @RequestMapping("/appointment")
 public class AppointmentResource {
 
-    private final SaveAppointmentUseCase scheduleAppointmentUseCase;
+    private final ScheduleAppointmentUseCase scheduleAppointmentUseCase;
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     public AppointmentResponse create(@Valid @RequestBody AppointmentRequest request) throws ScheduleAppointmentException {
