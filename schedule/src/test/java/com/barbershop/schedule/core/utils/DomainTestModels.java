@@ -80,8 +80,8 @@ public class DomainTestModels {
 
     public static Appointment APPOINTMENT_INVALID_BEFORE_NOW = Appointment.builder()
                 .appointmentId(UUID.randomUUID())
-                .date(LocalDate.of(2022,10, 11))
-                .startAt(LocalTime.now().minusHours(1))
+                .date(LocalDate.now())
+                .startAt(LocalTime.now())
                 .duration(15)
                 .customerId(UUID.randomUUID())
                 .barberId(UUID.randomUUID())

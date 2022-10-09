@@ -10,12 +10,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Set;
 
 import static com.barbershop.schedule.core.constants.ScheduleErrorMessages.*;
@@ -213,4 +213,20 @@ class ScheduleAppointmentUseCaseTest {
         assertEquals(INVALID_OUT_BUSINESS_TIME_MSG, exception.getMessage());
     }
 
+    @Test
+    void should_block_appointment_before_now() {
+        Appointment appointment = APPOINTMENT_INVALID_BEFORE_NOW;
+        if(LocalDate.now().getDayOfWeek().getValue() != 1){
+            when(repository.save(any())).thenReturn(any());
+            ScheduleException exception = assertThrows(ScheduleException.class, () -> scheduleAppointmentUseCase.execute(appointment));
+
+            verify(repository, times(1)).save(appointmentCaptor.capture());
+            verifyNoInteractions(getDiaryUseCase);
+            verifyNoInteractions(updateDiaryUseCase);
+
+            assertEquals(FAILURE, appointmentCaptor.getValue().getStatus());
+            assertEquals(SCHEDULE_BEFORE_NOW_MSG, exception.getMessage());
+        }
+
+    }
 }

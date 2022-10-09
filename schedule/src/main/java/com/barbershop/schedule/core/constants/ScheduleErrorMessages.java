@@ -10,7 +10,7 @@ public class ScheduleErrorMessages {
     public static final String INVALID_OVERLAP_TIME_MSG = "Cannot overlap unavailable time.";
     public static final String INVALID_LUNCH_TIME_MSG = "Cannot schedule on lunch time.";
     public static final String INVALID_OUT_BUSINESS_TIME_MSG = "Schedule should be between 8:00AM and 5:45PM";
-    public static final String SCHEDULE_BEFORE_NOW_MSG = "Schedule should be between 8:00AM and 5:45PM";
+    public static final String SCHEDULE_BEFORE_NOW_MSG = "Cannot schedule on past time.";
 
     public static final String INVALID_DATE_TITLE = "Invalid date requested!";
     public static final String INVALID_DATE_REQUEST_MSG = "Cannot schedule appointment on the requested day.";
