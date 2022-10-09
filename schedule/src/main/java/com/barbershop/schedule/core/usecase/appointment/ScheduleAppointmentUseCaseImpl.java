@@ -38,6 +38,7 @@ public class ScheduleAppointmentUseCaseImpl implements ScheduleAppointmentUseCas
         log.info("m execute - request={} - status={}", request, PROCESSING);
         try {
             validDateAppointment(request.getDate());
+            validateBeforeNowAppointment(request.getStartAt());
             validateLunchTimeAppointment(request);
             validateBusinessTimeRequest(request);
             Diary diary = getDiaryUseCase.execute(request.getDate());
@@ -66,6 +67,12 @@ public class ScheduleAppointmentUseCaseImpl implements ScheduleAppointmentUseCas
             || nextWeekEnd.isBefore(requestDate)
         ){
             throw new InvalidScheduleDateException();
+        }
+    }
+
+    private void validateBeforeNowAppointment(LocalTime startAt) throws ScheduleBeforeNowException {
+        if (LocalTime.now().isAfter(startAt)){
+            throw new ScheduleBeforeNowException();
         }
     }
 

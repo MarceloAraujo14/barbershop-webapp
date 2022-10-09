@@ -182,4 +182,35 @@ class ScheduleAppointmentUseCaseTest {
         assertEquals(FAILURE, appointmentCaptor.getValue().getStatus());
         assertEquals(INVALID_LUNCH_TIME_MSG, exception.getMessage());
     }
+
+    @Test
+    void should_block_appointment_after_business_time(){
+        Appointment appointment = APPOINTMENT_AFTER_BUSINESS_TIME;
+
+        when(repository.save(any())).thenReturn(any());
+        ScheduleException exception = assertThrows(ScheduleException.class, () -> scheduleAppointmentUseCase.execute(appointment));
+
+        verify(repository, times(1)).save(appointmentCaptor.capture());
+        verifyNoInteractions(getDiaryUseCase);
+        verifyNoInteractions(updateDiaryUseCase);
+
+        assertEquals(FAILURE, appointmentCaptor.getValue().getStatus());
+        assertEquals(INVALID_OUT_BUSINESS_TIME_MSG, exception.getMessage());
+    }
+
+    @Test
+    void should_block_appointment_before_business_time(){
+        Appointment appointment = APPOINTMENT_BEFORE_BUSINESS_TIME;
+
+        when(repository.save(any())).thenReturn(any());
+        ScheduleException exception = assertThrows(ScheduleException.class, () -> scheduleAppointmentUseCase.execute(appointment));
+
+        verify(repository, times(1)).save(appointmentCaptor.capture());
+        verifyNoInteractions(getDiaryUseCase);
+        verifyNoInteractions(updateDiaryUseCase);
+
+        assertEquals(FAILURE, appointmentCaptor.getValue().getStatus());
+        assertEquals(INVALID_OUT_BUSINESS_TIME_MSG, exception.getMessage());
+    }
+
 }
